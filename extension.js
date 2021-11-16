@@ -14,21 +14,21 @@ let getLivePagesInfo = {}
 function activate(context) {
 
 	const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left)
-	statusBarItem.command = 'extension.NBARealTimeScore.showMenu'
+	statusBarItem.command = 'extension.NBALiveScore.showMenu'
 	statusBarItem.tooltip = '点击显示列表'
-	context.subscriptions.push(vscode.commands.registerCommand('extension.NBARealTimeScore', function () {
+	context.subscriptions.push(vscode.commands.registerCommand('extension.NBALiveScore', function () {
 		statusBarItem.show()
 		getNBAInfo((text) => {
 			statusBarItem.text = text
 		})
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('extension.NBARealTimeScore.off', function () {
+	context.subscriptions.push(vscode.commands.registerCommand('extension.NBALiveScore.off', function () {
 		clearInterval(getTimer())
 		this.getLivePage = {}
 		statusBarItem.text = ''
 	}));
 
-	context.subscriptions.push(vscode.commands.registerCommand('extension.NBARealTimeScore.showMenu', function () {
+	context.subscriptions.push(vscode.commands.registerCommand('extension.NBALiveScore.showMenu', function () {
 		// 如果已经暂停获取数据，则重新获取一次新数据
 		if (!getTimer()) {
 			getNBAInfo((text) => {
@@ -57,7 +57,7 @@ function activate(context) {
 
 			// 选择退出时
 			if (selectedMatch && selectedMatch.code === 'exit') {
-				vscode.commands.executeCommand('extension.NBARealTimeScore.off');
+				vscode.commands.executeCommand('extension.NBALiveScore.off');
 				return
 			}
 			// 根据选择的比赛显示直播页
