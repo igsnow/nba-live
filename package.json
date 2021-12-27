@@ -4,7 +4,7 @@
     "description": "看NBA比赛啦！",
     "publisher": "igsnow",
     "icon": "images/icon.png",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "categories": [
         "Other"
     ],
@@ -37,6 +37,23 @@
                 "title": "Get a live text list"
             }
         ],
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "nba_id",
+                    "title": "nba live",
+                    "icon": "images/icon.png"
+                }
+            ]
+        },
+        "views": {
+            "nba_id": [
+                {
+                    "id": "nba_id",
+                    "name": "nba live score"
+                }
+            ]
+        },
         "keybindings": [
             {
                 "command": "extension.NBALiveScore",
