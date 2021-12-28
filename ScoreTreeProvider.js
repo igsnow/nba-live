@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const getMatches = require('./src/getNBAInfo').getMatches
 
 exports.myTreeProvider = class MyTreeProvider {
     constructor() {
@@ -17,14 +18,18 @@ exports.myTreeProvider = class MyTreeProvider {
 
     getChildren() {
         console.log('get children ');
-        let trees = []
-        let temp1 = new vscode.TreeItem('james')
-        let temp2 = new vscode.TreeItem('kobe')
-        let temp3 = new vscode.TreeItem('jordan')
 
-        trees.push(temp1)
-        trees.push(temp2)
-        trees.push(temp3)
+        let matchesList = getMatches().filter(match => match.matchStatus !== 'PENDING')
+
+        console.log('list ', matchesList.length);
+
+        let trees = []
+
+        for (let i = 0; i < matchesList.length; i++) {
+            const el = matchesList[i];
+            let temp = new vscode.TreeItem(el)
+            trees.push(temp)
+        }
 
         vscode.commands.executeCommand('extension.NBALiveScore.openWebview')
 
