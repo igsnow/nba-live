@@ -52,8 +52,6 @@ function activate(context) {
 	function showGameQuickPick(context) {
 		// 选项中只包括直播中或直播完的比赛，不包括未开始的
 		let matchesList = getMatches().filter(match => match.matchStatus !== 'PENDING')
-		
-		console.log('get matchesList ', 123);
 
 		// 有比赛但是直播页对象为空时，
 		if (matchesList.length !== 0 && Object.keys(getLivePagesInfo).length === 0) {
@@ -64,6 +62,7 @@ function activate(context) {
 		}
 
 		vscode.window.showQuickPick([...matchesList, { label: '退出插件', code: 'exit' }]).then(selectedMatch => {
+
 			// 如果没有选择任何一项，selectedMatch为undefined
 			if (!selectedMatch) { return }
 
