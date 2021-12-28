@@ -6,6 +6,8 @@ const getTimer = require('./src/getNBAInfo').getTimer
 const getMatches = require('./src/getNBAInfo').getMatches
 const getLivePage = require('./src/getLivePage')
 
+const ScoreTreeProvider = require('./ScoreTreeProvider')
+
 // 用于缓存所有比赛的直播页对象， 每个比赛直播页只能开一个， key值为每个比赛的label，用于与比赛对象对应
 let getLivePagesInfo = {}
 /**
@@ -40,9 +42,19 @@ function activate(context) {
 		}
 	}));
 
+	// 渲染左侧侧边栏sidebar的数据
+	ScoreTreeProvider.myTreeProvider.initMyTreeList()
+	context.subscriptions.push(vscode.commands.registerCommand('extension.NBALiveScore.openWebview', function (v) {
+		//  创建webview
+		console.log('create webview', v);
+	}))
+
 	function showGameQuickPick(context) {
 		// 选项中只包括直播中或直播完的比赛，不包括未开始的
 		let matchesList = getMatches().filter(match => match.matchStatus !== 'PENDING')
+		
+		console.log('get matchesList ', 123);
+
 		// 有比赛但是直播页对象为空时，
 		if (matchesList.length !== 0 && Object.keys(getLivePagesInfo).length === 0) {
 			// 根据比赛列表初始化直播页
@@ -63,11 +75,9 @@ function activate(context) {
 			// 根据选择的比赛显示直播页
 			getLivePagesInfo[selectedMatch.matchTitle].start()
 
-
 		});
 	}
 }
-exports.activate = activate;
 
 // this method is called when your extension is deactivated
 function deactivate() { }
