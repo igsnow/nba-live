@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="box">
+            <div class="section-left">
+                <div>{{ msg }}</div>
+                <div v-html="dataStatisticsHtml"></div>
+            </div>
+            <div class="right">
+                <table v-html="liveHtml">
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                msg: 'igsnow',
+                dataStatisticsHtml: '',
+                liveHtml: '',
+            },
+            mounted() {
+                window.addEventListener('message', event => {
+                    const message = event.data;
+                    console.log('message ', message);
+                    switch (message.command) {
+                        case 'updateData':
+                            app.dataStatisticsHtml = message.dataStatisticsHtml
+                            app.liveHtml = message.liveHtml
+                            break;
+                    }
+                });
+            },
+            methods: {
+            }
+        })
+    </script>
+</body>
+
+</html>
