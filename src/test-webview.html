@@ -12,7 +12,7 @@
     <div id="app">
         <div class="box">
             <div class="section-left">
-                <div>{{ msg }}</div>
+                <div>{{ site }}</div>
                 <div v-html="dataStatisticsHtml"></div>
             </div>
             <div class="right">
@@ -28,18 +28,19 @@
         var app = new Vue({
             el: '#app',
             data: {
-                msg: 'igsnow',
+                site: '',
                 dataStatisticsHtml: '',
                 liveHtml: '',
             },
             mounted() {
                 window.addEventListener('message', event => {
                     const message = event.data;
-                    console.log('message ', message);
+                    console.log('receive msg ', message);
                     switch (message.command) {
-                        case 'updateData':
+                        case 'updateMsg':
                             app.dataStatisticsHtml = message.dataStatisticsHtml
                             app.liveHtml = message.liveHtml
+                            app.site = message && message.msg && message.msg.site
                             break;
                     }
                 });

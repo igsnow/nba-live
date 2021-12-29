@@ -46,7 +46,7 @@ function activate(context) {
 	ScoreTreeProvider.myTreeProvider.initMyTreeList()
 	context.subscriptions.push(vscode.commands.registerCommand('extension.NBALiveScore.openWebview', function (v) {
 		//  创建webview
-		console.log('create webview', v);
+		// console.log('create webview', v);
 	}))
 
 	function showGameQuickPick(context) {

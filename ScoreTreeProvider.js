@@ -19,9 +19,11 @@ exports.myTreeProvider = class MyTreeProvider {
             console.log('click treeItem ', e);
 
             const selection = e && e.selection && e.selection[0];
+
             const columnToShowIn = vscode.window.activeTextEditor
                 ? vscode.window.activeTextEditor.viewColumn
                 : undefined;
+
             this.currentPanel = vscode.window.createWebviewPanel(
                 selection.label[0],
                 selection.label,
@@ -42,14 +44,25 @@ exports.myTreeProvider = class MyTreeProvider {
             this.currentPanel.onDidDispose(() => {
                 console.log('onDidDispose')
             })
+
             this.currentPanel.onDidChangeViewState(
                 e => {
 
                     const panel = e.webviewPanel;
 
                     panel.title = '我是标题'
+
+                    myTreeProvider.sendMsgToHtml({
+                        site: selection.label
+                    }, this.currentPanel)
                 }
             );
+
+            myTreeProvider.sendMsgToHtml({
+                site: selection.label
+            }, this.currentPanel)
+
+
         })
     }
 
@@ -57,8 +70,16 @@ exports.myTreeProvider = class MyTreeProvider {
         //ANCHOR  js文件在root目录的话，fs得访问绝对路径，否则找不到模板文件
         const templateHtml = fs.readFileSync(path.join(__dirname, '/src/test-webview.html'))
         let resHtml = templateHtml.toString()
-        console.log('generate html ', resHtml);
+        // console.log('generate html ', resHtml);
         return resHtml
+    }
+
+    sendMsgToHtml(msg, currentPanel) {
+        console.log('send msg ', msg);
+        currentPanel.webview.postMessage({
+            command: 'updateMsg',
+            msg
+        });
     }
 
     getTreeItem(el) {
