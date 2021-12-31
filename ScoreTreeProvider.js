@@ -1,7 +1,6 @@
 const vscode = require('vscode');
 const fs = require('fs')
 const path = require('path')
-const getMatches = require('./src/getNBAInfo').getMatches
 
 exports.myTreeProvider = class MyTreeProvider {
     constructor() {
@@ -17,6 +16,8 @@ exports.myTreeProvider = class MyTreeProvider {
 
         tree.onDidChangeSelection(e => {
             console.log('click treeItem ', e);
+
+            // 如何保证点击同一个按钮创建唯一的tab?
 
             const selection = e && e.selection && e.selection[0];
 
@@ -50,7 +51,7 @@ exports.myTreeProvider = class MyTreeProvider {
 
                     const panel = e.webviewPanel;
 
-                    panel.title = '我是标题'
+                    // panel.title = '我是标题'
 
                     myTreeProvider.sendMsgToHtml({
                         site: selection.label
@@ -91,19 +92,11 @@ exports.myTreeProvider = class MyTreeProvider {
         console.log('get children ');
         let trees = []
 
-        // let matchesList = getMatches().filter(match => match.matchStatus !== 'PENDING')
-
-        // console.log('list ', matchesList.length);
-
-        // for (let i = 0; i < matchesList.length; i++) {
-        //     const el = matchesList[i];
-        //     let temp = new vscode.TreeItem(el)
-        //     trees.push(temp)
-        // }
-
         trees.push(new vscode.TreeItem('baidu'))
-        trees.push(new vscode.TreeItem('taobao'))
-        trees.push(new vscode.TreeItem('qq.com'))
+        trees.push(new vscode.TreeItem('alibaba'))
+        trees.push(new vscode.TreeItem('tencent'))
+        trees.push(new vscode.TreeItem('bytedance'))
+        trees.push(new vscode.TreeItem('JD'))
 
 
         vscode.commands.executeCommand('extension.NBALiveScore.openWebview')
